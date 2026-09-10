@@ -1,0 +1,35 @@
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/mcloud.key -out /etc/nginx/mcloud.crt
+=====================================================================================
+Load Balancer Master
+vim /etc/nginx/conf.d/lb-mcloud.conf
+
+# Define the backend servers for load balancing
+upstream my_upstream {
+    server 192.168.83.191:8080;  # Backend server 1
+    server 192.168.83.192:8080;  # Backend server 2
+}
+
+# Redirect all HTTP requests to HTTPS
+server {
+    listen 80;  # Listen on HTTP (port 80)
+    server_name www.mcloud.local;  # Domain name
+    return 301 https://$host$request_uri;  # Redirect HTTP to HTTPS
+}
+
+# Handle HTTPS traffic and forward to backend servers
+server {
+    listen 443 ssl;  # Listen on HTTPS (port 443)
+    server_name www.mcloud.local;  # Domain name
+    ssl_certificate /etc/nginx/mcloud.crt;  # SSL certificate path
+    ssl_certificate_key /etc/nginx/mcloud.key;  # SSL certificate key path
+
+    # Proxy HTTPS requests to backend servers
+    location / {
+        proxy_pass http://my_upstream;  # Forward request to backend servers over HTTP
+        proxy_set_header X-Real-IP $remote_addr;  # Pass the real client IP to the backend
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;  # Pass forwarded IP addresses
+        proxy_set_header Host $host;  # Pass the original host header to the backend
+        proxy_set_header X-Forwarded-Proto https;  # Indicate the original request was over HTTPS
+        proxy_ssl_verify off;  # Disable SSL verification for upstream (backend)
+    }
+}
