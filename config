@@ -1,0 +1,15 @@
+#Dl Nginx and Ceart config file
+vi /etc/nginx/www.cloud.conf  
+  
+upstream www_mcloud {
+        server 192.168.56.106:8080; # www web1
+        server 192.168.56.107:8080; # www web2
+}
+
+server {
+        listen 80;
+        server_name www.mcloud.local;
+        location / {
+                proxy_pass http://www_mcloud;
+        }
+}
