@@ -15,7 +15,7 @@ vrrp_instance 51 {
   state MASTER
   interface ens160
   virtual_ipaddress {
-     192.168.83.180 # The virtual IP address that will be shared between MASTER and BACKUP
+     192.168.56.180 # The virtual IP address that will be shared between MASTER and BACKUP
   }
   track_script {
       nginx
