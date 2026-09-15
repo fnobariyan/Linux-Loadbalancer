@@ -1,0 +1,16 @@
+scp "C:\Users\Fatemeh\Downloads\rsync-service-2.0-0.el9.noarch.rpm" root@192.168.56.108:/root
+dnf install rsync
+rpm -ivh rsync-service-2.0-0.el9.noarch.rpm
+
+vi /etc/rsync.service
+SOURCE_DIR="/etc/nginx/" #If your path is a directory use / in end of path
+TARGET_USER="root"
+TARGET_SERVER="192.168.56.110"
+TARGET_DIR="/etc/nginx/"
+LAST_MODIFIED_FILE="/tmp/last_modified.txt"
+LOG_FILE="/var/log/rsync-service.log"
+
+systemctl restart rsync-service
+ssh-keygen
+ssh-copy-id root@192.168.56.110
+[root@lb1 ~]# ssh root@192.168.56.110 and [root@lb2 ~]# exit  #for testing
