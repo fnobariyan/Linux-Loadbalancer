@@ -1,0 +1,23 @@
+vim /etc/keepalived/keepalived.conf
+
+global_defs {
+  router_id lb1  # The hostname of this host.
+}
+vrrp_script nginx {
+  script "/usr/bin/killall -0 nginx"
+  interval 2
+  weight 2
+}
+vrrp_instance 51 {
+  virtual_router_id 51
+  advert_int 1
+  priority 52
+  state MASTER
+  interface ens160
+  virtual_ipaddress {
+     192.168.83.180 # The virtual IP address that will be shared between MASTER and BACKUP
+  }
+  track_script {
+      nginx
+  }
+}
