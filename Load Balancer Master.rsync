@@ -14,3 +14,5 @@ systemctl restart rsync-service
 ssh-keygen
 ssh-copy-id root@192.168.56.110
 [root@lb1 ~]# ssh root@192.168.56.110 and [root@lb2 ~]# exit  #for testing
+
+tail -f /var/log/rsync-service.log
