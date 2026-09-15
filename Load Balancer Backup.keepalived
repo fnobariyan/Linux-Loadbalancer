@@ -21,4 +21,7 @@ vrrp_instance 51 {
   }
 }
 
-[root@lb2 ~]#
+ip -br a #Testing
+lo               UNKNOWN        127.0.0.1/8 ::1/128
+enp0s3           UP             10.0.2.15/24 fd00::a00:27ff:fe3b:6b2b/64 fe80::a00:27ff:fe3b:6b2b/64
+enp0s8           UP             192.168.56.110/24 fe80::f28b:e9ac:7eaf:37b2/64
